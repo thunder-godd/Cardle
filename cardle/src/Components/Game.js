@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Attribute = ({ attribute, handleClick }) => {
 	return (
@@ -7,7 +7,7 @@ const Attribute = ({ attribute, handleClick }) => {
 			<button
 				type="button"
 				className="btn btn-secondary"
-				onClick={(e) => handleClick(e)}>
+				onClick={(e) => handleClick(e, attribute)}>
 				{attribute}
 			</button>
 		</div>
@@ -26,23 +26,70 @@ const Attempt = ({ attributes, handleClick }) => {
 const Status = ({ stat }) => {
 	return <div className="status">{stat}: 4</div>;
 };
-const Option = ({ option }) => {
+const Option = ({ option, selectOption }) => {
 	return (
 		<div className="option">
-			<button type="button" className="btn btn-secondary">
+			<button
+				type="button"
+				className="btn btn-secondary"
+				onClick={(e) => selectOption(e, option)}>
 				{option}
 			</button>
 		</div>
 	);
 };
+const Options = ({ options, selectOption }) => {
+	return (
+		<div className="Options">
+			{options.map((option, id) => (
+				<Option key={id} option={option} selectOption={selectOption} />
+			))}
+		</div>
+	);
+};
+
 const Game = () => {
 	const [attempts, setAttempts] = useState([0, 1, 2, 3]);
 	const [options, setOptions] = useState([0, 1, 2, 4]);
 	const [attributes, setAttributes] = useState(["C", "M", "E"]);
 	const [status, setStatus] = useState(["C", "M", "E", "E"]);
+	const [selections, setSelections] = useState([]);
 
-	const handleClick = (e) => {
-		console.log(e.target.value);
+	const handleClick = (e, attribute) => {
+		console.log(e.target.value, attribute);
+		let myOptions = mapOptions(attribute);
+		setOptions(myOptions);
+	};
+
+	const selectOption = (e, option) => {
+		let myOpt = option;
+		e.target.value = myOpt;
+		console.log(myOpt);
+	};
+
+	const mapOptions = (attribute) => {
+		const attrOpt = {
+			color: ["R", "B", "G"],
+			Model: ["M", "T", "S"],
+			Engine: ["E", "D", "P"],
+		};
+
+		let opt;
+		switch (attribute) {
+			case "C":
+				opt = attrOpt.color;
+				break;
+			case "M":
+				opt = attrOpt.Model;
+				break;
+			case "E":
+				opt = attrOpt.Engine;
+				break;
+			default:
+				break;
+		}
+
+		return opt;
 	};
 	return (
 		<div className="container-sm Game">
@@ -68,105 +115,10 @@ const Game = () => {
 					))}
 				</div>
 			</div>
-			<div className="Options">
-				{options.map((option, id) => (
-					<Option key={id} option={option} />
-				))}
-			</div>
+			<Options options={options} selectOption={selectOption} />
 			<hr />
 		</div>
 	);
 };
-// const Game = () => {
-// const [attempts, setAttempts] = useState([0, 1, 2, 3]);
-// const [options, setOptions] = useState([0, 1, 2]);
-// const [attributes, setattibutes] = useState([0, 1, 2]);
-// return (
-// 	<div className="container-sm Game">
-// 		<div className="first">
-// 			<div className="Attempts ">
-// 				<div className="Attempt ">
-// 					<div className="Attribute">
-// 						<button type="button" className="btn btn-secondary">
-// 							B
-// 						</button>
-// 					</div>
-// 					<div className="Attribute">
-// 						<button type="button" className="btn btn-secondary">
-// 							B
-// 						</button>
-// 					</div>
-// 					<div className="Attribute">
-// 						<button type="button" className="btn btn-secondary">
-// 							B
-// 						</button>
-// 					</div>
-// 				</div>
-// 				<div className="Attempt ">
-// 					<div className="Attribute">
-// 						<button type="button" className="btn btn-secondary">
-// 							B
-// 						</button>
-// 					</div>
-// 					<div className="Attribute">
-// 						<button type="button" className="btn btn-secondary">
-// 							B
-// 						</button>
-// 					</div>
-// 					<div className="Attribute">
-// 						<button type="button" className="btn btn-secondary">
-// 							B
-// 						</button>
-// 					</div>
-// 				</div>
-// 				<div className="Attempt ">
-// 					<div className="Attribute">
-// 						<button type="button" className="btn btn-secondary">
-// 							B
-// 						</button>
-// 					</div>
-// 					<div className="Attribute">
-// 						<button type="button" className="btn btn-secondary">
-// 							B
-// 						</button>
-// 					</div>
-// 					<div className="Attribute">
-// 						<button type="button" className="btn btn-secondary">
-// 							B
-// 						</button>
-// 					</div>
-// 				</div>
-// 			</div>
-// 			<div className="StatusBar">
-// 				<div className="status">Attempts: 4</div>
-// 				<div className="status">Attempts: 4</div>
-// 				<div className="status">Attempts: 4</div>
-// 			</div>
-// 		</div>
-// 		<div className="Options">
-// 			<div className="option">
-// 				<button type="button" className="btn btn-secondary">
-// 					B
-// 				</button>
-// 			</div>
-// 			<div className="option">
-// 				<button type="button" className="btn btn-secondary">
-// 					B
-// 				</button>
-// 			</div>
-// 			<div className="option">
-// 				<button type="button" className="btn btn-secondary">
-// 					B
-// 				</button>
-// 			</div>
-// 			<div className="option">
-// 				<button type="button" className="btn btn-secondary">
-// 					B
-// 				</button>
-// 			</div>
-// 		</div>
-// 		<hr />
-// 	</div>
-// );
-//}; */}
+
 export default Game;
