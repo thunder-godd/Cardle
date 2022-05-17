@@ -4,17 +4,16 @@ import "./App.css";
 
 function App() {
 	return (
-		<div className="App">
-			<div className="container">
-				<Gamebar />
-				<Game />
-				{/* gamebar 
+		<div className="container App">
+			<Gamebar />
+			<Game />
+			{/* gamebar 
 				game:
 					Grid:
 						3x5
 					options 3x1
 				 */}
-			</div>
+			<footer>thunder_godd</footer>
 		</div>
 	);
 }

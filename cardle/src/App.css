@@ -1,38 +1,78 @@
+* {
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+}
 .App {
-  text-align: center;
+	background-color: #282c34;
+	min-height: 100vh;
+	max-width: 320px;
+	border: 1px solid red;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.GameBar {
+	border: 1px solid green;
+	margin: 0px;
+	padding: 0px;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.Game {
+	border: 1px solid rgb(128, 0, 64);
+	padding: 0px;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.first {
+	border: 1px solid rgb(161, 206, 38);
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 0.5rem;
 }
-
-.App-link {
-  color: #61dafb;
+.Attempts {
+	border: 1px dotted orangered;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Attempt {
+	border: 1px dotted orangered;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 0.5rem;
+}
+.Attribute {
+	margin-right: 0.5rem;
+}
+.btn {
+	height: 3rem;
+	width: 3rem;
+}
+.StatusBar {
+	border: 1px dotted rgba(85, 0, 0, 0.63);
+	color: teal;
+	background-color: grey;
+	padding-left: 0.75rem;
+}
+.status {
+	border: 1px solid black;
+	height: 3rem;
+	margin-bottom: 0.5rem;
+	padding-left: 0.25rem;
+}
+.Options {
+	border: 1px solid rgb(0, 255, 213);
+	display: flex;
+	color: teal;
+	justify-content: space-between;
+}
+.option {
+	margin-right: 0.5rem;
+}
+footer {
+	border: 1px solid rgb(10, 4, 90);
+}
+/* .container{
+	
+} */
+/* .btn {
+	height: 3rem;
+	width: 3rem;
+	margin: 0.25rem;
+} */
+span {
+	display: inline-block;
+	color: teal;
 }
