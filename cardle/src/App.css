@@ -18,7 +18,7 @@
 	border: 1px solid rgb(128, 0, 64);
 	padding: 0px;
 }
-.first {
+.rows {
 	border: 1px solid rgb(161, 206, 38);
 	display: flex;
 	justify-content: space-between;
@@ -50,7 +50,7 @@
 	border: 1px solid black;
 	height: 3rem;
 	margin-bottom: 0.5rem;
-	padding-left: 0.25rem;
+	padding-left: 0.5rem;
 }
 .Options {
 	border: 1px solid rgb(0, 255, 213);
