@@ -5,6 +5,7 @@
 }
 .App {
 	background-color: #282c34;
+	margin: auto;
 	min-height: 100vh;
 	max-width: 320px;
 	border: 1px solid red;
@@ -18,13 +19,13 @@
 	border: 1px solid rgb(128, 0, 64);
 	padding: 0px;
 }
-.rows {
+.row {
 	border: 1px solid rgb(161, 206, 38);
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 0.5rem;
 }
-.Attempts {
+.Board {
 	border: 1px dotted orangered;
 }
 .Attempt {

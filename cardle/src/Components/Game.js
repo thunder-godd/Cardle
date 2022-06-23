@@ -1,54 +1,95 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-const Attribute = ({ attempt_id, id, attribute, handleClick, selections }) => {
-	//console.log("line6", selections);
-	//console.log("line7", id, attribute);
-	let attr_id = `${attempt_id}` + `${id}`;
-	console.log("line7", attempt_id, id, attr_id);
-	let selection = selections[id];
+const Attribute = ({
+	attribute,
+	attr_id,
+	attempt_id,
+	handleClick,
+	selections,
+}) => {
+	let selection = selections[attempt_id][attr_id];
 	return (
 		<div className="Attribute">
 			<button
-				id={attr_id}
+				className="btn btn-secondary"
+				onClick={() => handleClick(attempt_id, attr_id)}>
+				{selection !== "" ? selection : attribute}
+			</button>
+		</div>
+	);
+};
+const Attempt = ({ attempt_id, attributes, handleClick, selections }) => {
+	return (
+		<div className="Attempt" id={attempt_id}>
+			{attributes.map((attribute, id) => {
+				return (
+					<Attribute
+						key={id}
+						attr_id={id}
+						attempt_id={attempt_id}
+						attribute={attribute}
+						handleClick={handleClick}
+						selections={selections}
+					/>
+				);
+			})}
+		</div>
+	);
+};
+const Board = ({ attempts, attributes, handleClick, selections }) => {
+	return (
+		<div className="Board">
+			{attempts.map((attempt, id) => {
+				return (
+					<Attempt
+						key={id}
+						attempt_id={attempt}
+						attributes={attributes}
+						handleClick={handleClick}
+						selections={selections}
+					/>
+				);
+			})}
+		</div>
+	);
+};
+const Option = ({
+	id,
+	option,
+	selectOption,
+	currentAttempt,
+	currentAttribute,
+}) => {
+	return (
+		<div className="option">
+			<button
+				id={id}
 				type="button"
 				className="btn btn-secondary"
-				onClick={(e) => handleClick(e, attribute, attr_id)}>
-				{selection ? selection : attribute}
+				onClick={() => selectOption(currentAttempt, currentAttribute, option)}>
+				{option}
 			</button>
 		</div>
 	);
 };
 
-const Attempt = ({ id, attributes, handleClick, selections }) => {
-	let attempt_id = id;
+const Options = ({
+	currentAttempt,
+	currentAttribute,
+	options,
+	selectOption,
+}) => {
 	return (
-		<div className="Attempt ">
-			{attributes.map((attribute, id) => (
-				<Attribute
+		<div className="Options">
+			{options.map((option, id) => (
+				<Option
 					key={id}
 					id={id}
-					attempt_id={attempt_id}
-					attribute={attribute}
-					handleClick={handleClick}
-					selections={selections}
-				/>
-			))}
-		</div>
-	);
-};
-const Attempts = ({ attempts, attributes, handleClick, selections }) => {
-	//console.log("line38", selections);
-	return (
-		<div className="Attempts">
-			{attempts.map((attempt, id) => (
-				<Attempt
-					key={id}
-					id={id}
-					attempts={attempt}
-					attributes={attributes}
-					handleClick={handleClick}
-					selections={selections}
+					option={option}
+					selectOption={selectOption}
+					currentAttempt={currentAttempt}
+					currentAttribute={currentAttribute}
 				/>
 			))}
 		</div>
@@ -57,35 +98,11 @@ const Attempts = ({ attempts, attributes, handleClick, selections }) => {
 const Status = ({ stat }) => {
 	return <div className="status">{stat}: 4</div>;
 };
-
-const StatusBar = ({ status, attempts }) => {
+const Statusbar = ({ status, attempts }) => {
 	return (
 		<div className="StatusBar">
 			{status.map((stat, id) => (
 				<Status key={id} stat={stat} attempts={attempts} />
-			))}
-		</div>
-	);
-};
-const Option = ({ id, option, selectOption }) => {
-	console.log("line68", option, id);
-	return (
-		<div className="option">
-			<button
-				id={id}
-				type="button"
-				className="btn btn-secondary"
-				onClick={(e) => selectOption(e, option)}>
-				{option}
-			</button>
-		</div>
-	);
-};
-const Options = ({ options, selectOption }) => {
-	return (
-		<div className="Options">
-			{options.map((option, id) => (
-				<Option key={id} id={id} option={option} selectOption={selectOption} />
 			))}
 		</div>
 	);
@@ -103,75 +120,87 @@ const Submitbtn = ({ handleSubmit }) => {
 	);
 };
 const Game = () => {
-	const [attempts, setAttempts] = useState([0, 1, 2, 3]);
+	const [attempts, setAttempts] = useState([0]);
+	const [currentAttempt, setCurrentAttempt] = useState();
+	const [attributes] = useState(["C", "M", "E"]);
+	const [currentAttribute, setCurrentAttribute] = useState();
 	const [options, setOptions] = useState([0, 1, 2]);
-	const [attributes, setAttributes] = useState(["C", "M", "E"]);
 	const [status, setStatus] = useState(["C", "M", "E", "E"]);
-	const [selections, setSelections] = useState([]);
+	const [selections, setSelections] = useState([
+		["", "", ""],
+		["", "", ""],
+		["", "", ""],
+	]);
 
-	const handleClick = (e, attribute, id) => {
-		let myOptions = mapOptions(attribute);
+	const handleClick = (attempt_id, attr_id) => {
+		let myOptions = mapOptions(attr_id);
 		setOptions(myOptions);
+		setCurrentAttempt(attempt_id);
+		setCurrentAttribute(attr_id);
 	};
-	const mapOptions = (attribute) => {
+	const mapOptions = (attr_id) => {
 		const attrOpt = {
 			color: ["R", "B", "G"],
 			Model: ["M", "T", "S"],
 			Engine: ["E", "D", "P"],
 		};
-
 		let opt;
-		switch (attribute) {
-			case "C":
+		switch (attr_id) {
+			case 0:
 				opt = attrOpt.color;
 				break;
-			case "M":
+			case 1:
 				opt = attrOpt.Model;
 				break;
-			case "E":
+			case 2:
 				opt = attrOpt.Engine;
 				break;
 			default:
 				break;
 		}
-
 		return opt;
 	};
-	const selectOption = (e, option, id) => {
-		let myOpt = option;
-		//e.target.value = myOpt;
-		//let id = e.target.id;
+	const selectOption = (currentAttempt, currentAttribute, option) => {
 		setSelections((prevState) => {
-			prevState[id] = myOpt;
-			console.log("line138", selections);
-			return [...prevState[id]];
+			prevState[currentAttempt][currentAttribute] = option;
+			return [...prevState];
 		});
-		console.log(myOpt);
-		console.log(selections);
+		// console.log(selections);
+		// console.log(currentAttempt);
+		// console.log(currentAttribute);
+		// console.log(option);
 	};
-
-	const handleSubmit = (e) => {
-		console.log(selections);
+	const handleSubmit = () => {
+		//run checker
+		//display results
+		//update attempts
+		//make prev attempt uneditable
 	};
 	return (
-		<div className="container-sm Game">
-			<div className="rows">
-				<Attempts
+		<div className="Game" id="Game">
+			<div className="row">
+				<Board
 					attempts={attempts}
 					attributes={attributes}
 					handleClick={handleClick}
 					selections={selections}
 				/>
-				<StatusBar status={status} attempts={attempts} />
+				<Statusbar status={status} />
 			</div>
-			<div className="rows">
-				<Options options={options} selectOption={selectOption} />
-				<Submitbtn handleSubmit={handleSubmit} />
+			<div className="row">
+				<Options
+					options={options}
+					selectOption={selectOption}
+					currentAttempt={currentAttempt}
+					currentAttribute={currentAttribute}
+				/>
+				<Submitbtn
+					selections={selections}
+					attempts={attempts}
+					handleSubmit={handleSubmit}
+				/>
 			</div>
-
-			<hr />
 		</div>
 	);
 };
-
 export default Game;

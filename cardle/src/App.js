@@ -7,12 +7,7 @@ function App() {
 		<div className="container App">
 			<Gamebar />
 			<Game />
-			{/* gamebar 
-				game:
-					Grid:
-						3x5
-					options 3x1
-				 */}
+
 			<footer>thunder_godd</footer>
 		</div>
 	);
