@@ -36,13 +36,15 @@
 }
 .Attribute {
 	margin-right: 0.5rem;
+	display: flex;
 }
 .btn {
 	height: 3rem;
 	width: 3rem;
 }
 .StatusBar {
-	border: 1px dotted rgba(85, 0, 0, 0.63);
+	display: flex;
+	border: 1px dotted rgba(41, 34, 34, 0.63);
 	color: teal;
 	background-color: grey;
 	padding-left: 0.75rem;

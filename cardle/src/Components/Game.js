@@ -1,136 +1,71 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import CARS from "utilities/cars";
+import randomizer from "utilities/randomizer";
+import Board from "./Board";
+import Options from "./Options";
+import StatusBar from "./StatusBar";
+import Submit from "./Submit";
 
-const Attribute = ({
-	attribute,
-	attr_id,
-	attempt_id,
-	handleClick,
-	selections,
-}) => {
-	let selection = selections[attempt_id][attr_id];
+const newCar = randomizer(CARS);
+
+const Start = ({ startGame }) => {
 	return (
-		<div className="Attribute">
-			<button
-				className="btn btn-secondary"
-				onClick={() => handleClick(attempt_id, attr_id)}>
-				{selection !== "" ? selection : attribute}
-			</button>
-		</div>
-	);
-};
-const Attempt = ({ attempt_id, attributes, handleClick, selections }) => {
-	return (
-		<div className="Attempt" id={attempt_id}>
-			{attributes.map((attribute, id) => {
-				return (
-					<Attribute
-						key={id}
-						attr_id={id}
-						attempt_id={attempt_id}
-						attribute={attribute}
-						handleClick={handleClick}
-						selections={selections}
-					/>
-				);
-			})}
-		</div>
-	);
-};
-const Board = ({ attempts, attributes, handleClick, selections }) => {
-	return (
-		<div className="Board">
-			{attempts.map((attempt, id) => {
-				return (
-					<Attempt
-						key={id}
-						attempt_id={attempt}
-						attributes={attributes}
-						handleClick={handleClick}
-						selections={selections}
-					/>
-				);
-			})}
-		</div>
-	);
-};
-const Option = ({
-	id,
-	option,
-	selectOption,
-	currentAttempt,
-	currentAttribute,
-}) => {
-	return (
-		<div className="option">
-			<button
-				id={id}
-				type="button"
-				className="btn btn-secondary"
-				onClick={() => selectOption(currentAttempt, currentAttribute, option)}>
-				{option}
-			</button>
+		<div>
+			<button onClick={() => startGame()}>START</button>
 		</div>
 	);
 };
 
-const Options = ({
-	currentAttempt,
-	currentAttribute,
-	options,
-	selectOption,
-}) => {
-	return (
-		<div className="Options">
-			{options.map((option, id) => (
-				<Option
-					key={id}
-					id={id}
-					option={option}
-					selectOption={selectOption}
-					currentAttempt={currentAttempt}
-					currentAttribute={currentAttribute}
-				/>
-			))}
-		</div>
-	);
-};
-const Status = ({ stat }) => {
-	return <div className="status">{stat}: 4</div>;
-};
-const Statusbar = ({ status, attempts }) => {
-	return (
-		<div className="StatusBar">
-			{status.map((stat, id) => (
-				<Status key={id} stat={stat} attempts={attempts} />
-			))}
-		</div>
-	);
-};
-const Submitbtn = ({ handleSubmit }) => {
-	return (
-		<div className="Submitbtn">
-			<button
-				type="button"
-				className="btn btn-secondary"
-				onClick={(e) => handleSubmit(e)}>
-				OK
-			</button>
-		</div>
-	);
-};
 const Game = () => {
+	const [car, setCar] = useState(newCar);
 	const [attempts, setAttempts] = useState([0]);
-	const [currentAttempt, setCurrentAttempt] = useState();
-	const [attributes] = useState(["C", "M", "E"]);
+	const [currentAttempt, setCurrentAttempt] = useState(0);
+	const [attributes] = useState(["Color", "Body", "Engine"]);
 	const [currentAttribute, setCurrentAttribute] = useState();
 	const [options, setOptions] = useState([0, 1, 2]);
-	const [status, setStatus] = useState(["C", "M", "E", "E"]);
+	const [status] = useState(["Attempts", "Correct"]);
+	const [win, setWin] = useState(false);
+	const [checks, setChecks] = useState([
+		[false, false, false],
+		[false, false, false],
+		[false, false, false],
+	]);
 	const [selections, setSelections] = useState([
 		["", "", ""],
 		["", "", ""],
 		["", "", ""],
 	]);
+	const startGame = () => {
+		setCurrentAttempt(0);
+		setCar(randomizer(CARS));
+	};
+	console.log(car);
+	const checker = (selection, currentAttempt) => {
+		//console.log(selection);
+		for (let i = 0; i < selection.length; i++) {
+			if (selection[i] === car[i]) {
+				console.log(`${selection[i]}  is correct`);
+				setChecks((prevState) => {
+					prevState[currentAttempt][i] = true;
+					return [...prevState];
+				});
+			}
+		}
+	};
+	useEffect(() => {
+		console.log(checks);
+		checkWin();
+	});
+	const checkWin = () => {
+		console.log(win, currentAttempt);
+		console.log(checks[currentAttempt]);
+		checks[currentAttempt][0] &&
+			checks[currentAttempt][1] &&
+			checks[currentAttempt][2] &&
+			setWin(true);
+		console.log(win, "you win");
+	};
 
 	const handleClick = (attempt_id, attr_id) => {
 		let myOptions = mapOptions(attr_id);
@@ -140,17 +75,17 @@ const Game = () => {
 	};
 	const mapOptions = (attr_id) => {
 		const attrOpt = {
-			color: ["R", "B", "G"],
-			Model: ["M", "T", "S"],
-			Engine: ["E", "D", "P"],
+			Color: ["Red", "Blue", "Black"],
+			Body: ["Sedan", "Truck", "SUV"],
+			Engine: ["Petrol", "Electric", "Hybrid"],
 		};
 		let opt;
 		switch (attr_id) {
 			case 0:
-				opt = attrOpt.color;
+				opt = attrOpt.Color;
 				break;
 			case 1:
-				opt = attrOpt.Model;
+				opt = attrOpt.Body;
 				break;
 			case 2:
 				opt = attrOpt.Engine;
@@ -170,22 +105,27 @@ const Game = () => {
 		// console.log(currentAttribute);
 		// console.log(option);
 	};
-	const handleSubmit = () => {
+	const handleSubmit = (selections, currentAttempt) => {
+		const selection = selections[currentAttempt];
 		//run checker
 		//display results
 		//update attempts
 		//make prev attempt uneditable
+		// console.log(selections, currentAttempt);
+		// console.log(selection);
+		checker(selection, currentAttempt);
 	};
 	return (
 		<div className="Game" id="Game">
+			<StatusBar status={status} />
 			<div className="row">
 				<Board
 					attempts={attempts}
 					attributes={attributes}
 					handleClick={handleClick}
 					selections={selections}
+					checks={checks}
 				/>
-				<Statusbar status={status} />
 			</div>
 			<div className="row">
 				<Options
@@ -194,13 +134,17 @@ const Game = () => {
 					currentAttempt={currentAttempt}
 					currentAttribute={currentAttribute}
 				/>
-				<Submitbtn
+				<Submit
 					selections={selections}
-					attempts={attempts}
+					currentAttempt={currentAttempt}
 					handleSubmit={handleSubmit}
 				/>
+			</div>
+			<div className="row">
+				<Start startGame={startGame} />
 			</div>
 		</div>
 	);
 };
+
 export default Game;
