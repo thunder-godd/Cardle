@@ -6,14 +6,15 @@ const Attribute = ({
 	attempt_id,
 	handleClick,
 	selections,
-	check,
+	checks,
 }) => {
 	let selection = selections[attempt_id][attr_id];
+	let check = checks[attempt_id][attr_id];
 	return (
 		<div className="Attribute">
 			<button
 				className="btn btn-secondary"
-				onClick={() => handleClick(attempt_id, attr_id)}>
+				onClick={(e) => handleClick(e.target, attempt_id, attr_id)}>
 				{selection !== "" ? selection : attribute}
 			</button>
 			<Check check={check} />
@@ -26,7 +27,7 @@ const Attempt = ({
 	attributes,
 	handleClick,
 	selections,
-	check,
+	checks,
 }) => {
 	return (
 		<div className="Attempt" id={attempt_id}>
@@ -39,18 +40,18 @@ const Attempt = ({
 						attribute={attribute}
 						handleClick={handleClick}
 						selections={selections}
-						check={check}
+						checks={checks}
 					/>
 				);
 			})}
 		</div>
 	);
 };
-const Check = (check) => {
-	// console.log(check);
-	return <div>{check ? "F" : "T"}</div>;
+const Check = ({ check }) => {
+	console.log(check);
+	return <div>{check ? "T" : "F"}</div>;
 };
-const Board = ({ attempts, attributes, handleClick, selections, check }) => {
+const Board = ({ attempts, attributes, handleClick, selections, checks }) => {
 	return (
 		<div className="Board">
 			{attempts.map((attempt, id) => {
@@ -61,7 +62,7 @@ const Board = ({ attempts, attributes, handleClick, selections, check }) => {
 						attributes={attributes}
 						handleClick={handleClick}
 						selections={selections}
-						check={check}
+						checks={checks}
 					/>
 				);
 			})}

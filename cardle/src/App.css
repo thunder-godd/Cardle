@@ -4,13 +4,14 @@
 	box-sizing: border-box;
 }
 .App {
-	background-color: #282c34;
+	background-color: #09003e;
 	margin: auto;
 	min-height: 100vh;
 	max-width: 320px;
 	border: 1px solid red;
 }
 .GameBar {
+	background-color: #00041e;
 	border: 1px solid green;
 	margin: 0px;
 	padding: 0px;
@@ -19,6 +20,14 @@
 	border: 1px solid rgb(128, 0, 64);
 	padding: 0px;
 }
+.StatBar {
+	background-color: #a48aed;
+	display: flex;
+	border: 1px dotted rgba(41, 34, 34, 0.63);
+	color: teal;
+
+	padding-left: 0.75rem;
+}
 .row {
 	border: 1px solid rgb(161, 206, 38);
 	display: flex;
@@ -26,6 +35,8 @@
 	margin-bottom: 0.5rem;
 }
 .Board {
+	background-color: #00041e;
+	margin: auto;
 	border: 1px dotted orangered;
 }
 .Attempt {
@@ -42,13 +53,7 @@
 	height: 3rem;
 	width: 3rem;
 }
-.StatusBar {
-	display: flex;
-	border: 1px dotted rgba(41, 34, 34, 0.63);
-	color: teal;
-	background-color: grey;
-	padding-left: 0.75rem;
-}
+
 .status {
 	border: 1px solid black;
 	height: 3rem;

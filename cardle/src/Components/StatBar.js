@@ -3,9 +3,9 @@ import React from "react";
 const Status = ({ stat }) => {
 	return <div className="status">{stat}: 4</div>;
 };
-const StatusBar = ({ status, attempts }) => {
+const StatBar = ({ status, attempts }) => {
 	return (
-		<div className="StatusBar">
+		<div className="StatBar">
 			{status.map((stat, id) => (
 				<Status key={id} stat={stat} attempts={attempts} />
 			))}
@@ -13,4 +13,4 @@ const StatusBar = ({ status, attempts }) => {
 	);
 };
 
-export default StatusBar;
+export default StatBar;
