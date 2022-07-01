@@ -5,72 +5,132 @@
 }
 .App {
 	background-color: #09003e;
-	margin: auto;
 	min-height: 100vh;
+	margin: auto;
 	max-width: 320px;
-	border: 1px solid red;
+	box-shadow: 4px 10px 42px 19px rgba(0, 0, 0, 0.65);
+	-webkit-box-shadow: 4px 10px 42px 19px rgba(0, 0, 0, 0.65);
+	-moz-box-shadow: 4px 10px 42px 19px rgba(0, 0, 0, 0.65);
+	/* border: 2px solid red; */
 }
 .GameBar {
 	background-color: #00041e;
-	border: 1px solid green;
-	margin: 0px;
-	padding: 0px;
+	display: flex;
+	width: 320px;
+	margin: auto;
+	border: 2px solid #d5cae8;
+	border-radius: 5px;
+	height: 3rem;
+	padding: 0.5rem;
 }
-.Game {
-	border: 1px solid rgb(128, 0, 64);
-	padding: 0px;
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	width: 320px;
+	margin: auto;
 }
+.logo {
+	color: #ffffff;
+	font-family: "Sarina", cursive;
+}
+.navbar-toggler {
+	width: 1.5rem;
+}
+/* .Game {
+} */
 .StatBar {
 	background-color: #a48aed;
+	margin-top: 0.5rem;
+	height: 2.5rem;
 	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	border: 1px dotted rgba(41, 34, 34, 0.63);
-	color: teal;
-
-	padding-left: 0.75rem;
-}
-.row {
-	border: 1px solid rgb(161, 206, 38);
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 0.5rem;
-}
-.Board {
-	background-color: #00041e;
-	margin: auto;
-	border: 1px dotted orangered;
-}
-.Attempt {
-	border: 1px dotted orangered;
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 0.5rem;
-}
-.Attribute {
-	margin-right: 0.5rem;
-	display: flex;
-}
-.btn {
-	height: 3rem;
-	width: 3rem;
-}
-
-.status {
-	border: 1px solid black;
-	height: 3rem;
-	margin-bottom: 0.5rem;
+	border-radius: 5px;
+	color: #ffffff;
 	padding-left: 0.5rem;
 }
+/* .status {
+	border: 1px solid black;
+} */
+.Board {
+	background-color: #00041e;
+	width: 90%;
+	margin: auto;
+	margin-top: 1rem;
+	padding: 0.5rem;
+	/* border: 1px dotted orangered; */
+	border-radius: 7px;
+}
+.Attempt {
+	/* border: 1px dotted orangered; */
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 0.5rem;
+}
+.inactive {
+	display: none;
+}
+.Attribute {
+	width: 5rem;
+	display: flex;
+	justify-content: space-between;
+	border: none;
+	background-color: #00041e;
+}
+.btn {
+	background-color: #d5cae8;
+
+	height: 3rem;
+	width: 3rem;
+	border: none;
+	border-radius: 7px;
+}
+.Check {
+	align-self: center;
+}
+.row {
+	/* border: 1px solid rgb(161, 206, 38); */
+	border-radius: 7px;
+	background-color: #00041e;
+	margin-top: 2rem;
+	padding: 0.75rem;
+	margin-left: 0.75rem;
+	margin-right: 0.75rem;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 0.5rem;
+}
+
 .Options {
-	border: 1px solid rgb(0, 255, 213);
+	/* border: 1px solid rgb(0, 255, 213); */
 	display: flex;
 	color: teal;
-	justify-content: space-between;
+	justify-content: space-evenly;
 }
 .option {
 	margin-right: 0.5rem;
 }
+.btn-submit {
+	border-radius: 50%;
+	background-color: #54e360;
+}
+.Start {
+	height: 4rem;
+	margin: auto;
+}
+.start-btn {
+	width: 4rem;
+	height: 4rem;
+	border-radius: 50%;
+}
 footer {
-	border: 1px solid rgb(10, 4, 90);
+	/* border: 1px solid rgb(10, 4, 90); */
+	width: 320px;
+	margin: auto;
+	margin-top: 5rem;
+	color: #ffffff;
+	text-align: center;
 }
 /* .container{
 	

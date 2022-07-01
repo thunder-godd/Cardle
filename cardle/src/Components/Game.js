@@ -2,6 +2,23 @@ import React from "react";
 import { useState, useEffect } from "react";
 import CARS from "utilities/cars";
 import randomizer from "utilities/randomizer";
+import Color from "./icons/Color";
+import Body from "./icons/Body";
+import Engine from "./icons/Engine";
+import Direction from "./icons/Direction";
+import Black from "./icons/Black";
+import Green from "./icons/Green";
+import Red from "./icons/Red";
+import Blue from "./icons/Blue";
+import Sedan from "./icons/Sedan";
+import Truck from "./icons/Truck";
+import Suv from "./icons/Suv";
+import Hatch from "./icons/Hatch";
+import Petrol from "./icons/Petrol";
+import Diesel from "./icons/Diesel";
+import Electric from "./icons/Electric";
+import Hybrid from "./icons/Hybrid";
+
 import Board from "./Board";
 import GameOver from "./GameOver";
 import Options from "./Options";
@@ -12,22 +29,35 @@ const newCar = randomizer(CARS);
 
 const Start = ({ startGame }) => {
 	return (
-		<div>
-			<button onClick={() => startGame()}>START</button>
+		<div className="Start">
+			<button className="start-btn" onClick={() => startGame()}>
+				START
+			</button>
 		</div>
 	);
 };
 
 const Game = () => {
 	const [car, setCar] = useState(newCar);
-	const [attempts, setAttempts] = useState([0, 1, 2]);
+	const [attempts, setAttempts] = useState([0]);
 	const [fuel, setFuel] = useState([0, 1, 2]);
+	const [prevAttempt, setPrevAttempt] = useState();
 	const [currentAttempt, setCurrentAttempt] = useState(0);
-	const [attributes] = useState(["Color", "Body", "Engine"]);
+	const [attributes] = useState([Color, Body, Engine]);
 	const [currentAttribute, setCurrentAttribute] = useState();
-	const [options, setOptions] = useState(["", "", ""]);
+	const [options, setOptions] = useState([
+		Direction,
+		Direction,
+		Direction,
+		Direction,
+	]);
 	const [status] = useState(["Attempts", "Correct"]);
 	const [win, setWin] = useState(false);
+	const [attrOpt] = useState({
+		colors: [Red, Blue, Black, Green],
+		body: [Sedan, Truck, Suv, Hatch],
+		engine: [Petrol, Electric, Hybrid, Diesel],
+	});
 	const [targets, setTargets] = useState([
 		["", "", ""],
 		["", "", ""],
@@ -46,6 +76,8 @@ const Game = () => {
 	const startGame = () => {
 		setCurrentAttempt(0);
 		setCar(randomizer(CARS));
+		setAttempts([0]);
+		setOptions([Direction, Direction, Direction, Direction]);
 		setChecks([
 			["", "", ""],
 			["", "", ""],
@@ -56,19 +88,26 @@ const Game = () => {
 			["", "", ""],
 			["", "", ""],
 		]);
+		setTargets([
+			["", "", ""],
+			["", "", ""],
+			["", "", ""],
+		]);
+		setFuel([0, 1, 2]);
 	};
-	console.log(car);
+	//console.log(car);
+
 	const checker = (selection, currentAttempt) => {
-		//console.log(selection);
+		////console.log(selection);
 		for (let i = 0; i < selection.length; i++) {
 			if (selection[i] === car[i]) {
-				console.log(`${selection[i]}  is correct`);
+				//console.log(`${selection[i]}  is correct`);
 				setChecks((prevState) => {
 					prevState[currentAttempt][i] = true;
 					return [...prevState];
 				});
 			} else {
-				console.log(`${selection[i]}  is wrong`);
+				//console.log(`${selection[i]}  is wrong`);
 				setChecks((prevState) => {
 					prevState[currentAttempt][i] = false;
 					return [...prevState];
@@ -77,18 +116,18 @@ const Game = () => {
 		}
 	};
 	useEffect(() => {
-		console.log(checks);
+		//console.log(checks);
 		checkWin();
 	});
 	const checkWin = () => {
-		console.log(win, currentAttempt);
-		console.log(checks[currentAttempt]);
+		//console.log(win, currentAttempt);
+		//console.log(checks[currentAttempt]);
 
 		checks[currentAttempt][0] &&
 			checks[currentAttempt][1] &&
 			checks[currentAttempt][2] &&
 			setWin(true);
-		console.log(win, "you win");
+		//console.log(win, "you win");
 	};
 	const disableAttempt = () => {
 		for (let i = 0; i < 3; i++) {
@@ -96,6 +135,7 @@ const Game = () => {
 		}
 	};
 	const handleClick = (target, attempt_id, attr_id) => {
+		console.log(target, attempt_id, attr_id);
 		let myOptions = mapOptions(attr_id);
 		setOptions(myOptions);
 		setCurrentAttempt(attempt_id);
@@ -106,21 +146,16 @@ const Game = () => {
 		});
 	};
 	const mapOptions = (attr_id) => {
-		const attrOpt = {
-			Color: ["Red", "Blue", "Black"],
-			Body: ["Sedan", "Truck", "SUV"],
-			Engine: ["Petrol", "Electric", "Hybrid"],
-		};
 		let opt;
 		switch (attr_id) {
 			case 0:
-				opt = attrOpt.Color;
+				opt = attrOpt.colors;
 				break;
 			case 1:
-				opt = attrOpt.Body;
+				opt = attrOpt.body;
 				break;
 			case 2:
-				opt = attrOpt.Engine;
+				opt = attrOpt.engine;
 				break;
 			default:
 				break;
@@ -132,10 +167,10 @@ const Game = () => {
 			prevState[currentAttempt][currentAttribute] = option;
 			return [...prevState];
 		});
-		// console.log(selections);
-		// console.log(currentAttempt);
-		// console.log(currentAttribute);
-		// console.log(option);
+		// //console.log(selections);
+		// //console.log(currentAttempt);
+		// //console.log(currentAttribute);
+		//console.log(option);
 	};
 	const handleSubmit = (selections, currentAttempt) => {
 		const selection = selections[currentAttempt];
@@ -143,10 +178,11 @@ const Game = () => {
 		//display results
 		//update attempts
 		//make prev attempt uneditable
-		// console.log(selections, currentAttempt);
-		// console.log(selection);
+		// //console.log(selections, currentAttempt);
+		// //console.log(selection);
 		checker(selection, currentAttempt);
 		disableAttempt();
+		setPrevAttempt(currentAttempt);
 		setFuel(fuel.pop());
 	};
 	return (

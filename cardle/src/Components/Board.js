@@ -1,21 +1,25 @@
 import React from "react";
-
-const Attribute = ({
-	attribute,
+import Correct from "./icons/Correct";
+import Wrong from "./icons/Wrong";
+const Btn = ({
+	Attribute,
 	attr_id,
 	attempt_id,
 	handleClick,
 	selections,
 	checks,
 }) => {
-	let selection = selections[attempt_id][attr_id];
+	let Selection = selections[attempt_id][attr_id];
 	let check = checks[attempt_id][attr_id];
+
 	return (
 		<div className="Attribute">
 			<button
 				className="btn btn-secondary"
-				onClick={(e) => handleClick(e.target, attempt_id, attr_id)}>
-				{selection !== "" ? selection : attribute}
+				onClick={(e) => handleClick(e.target, attempt_id, attr_id)}
+				//onClick={() => console.log("clicked", attempt_id, attr_id)}
+			>
+				{Selection !== "" ? <Selection /> : <Attribute />}
 			</button>
 			<Check check={check} />
 		</div>
@@ -31,13 +35,13 @@ const Attempt = ({
 }) => {
 	return (
 		<div className="Attempt" id={attempt_id}>
-			{attributes.map((attribute, id) => {
+			{attributes.map((Attribute, id) => {
 				return (
-					<Attribute
+					<Btn
 						key={id}
 						attr_id={id}
 						attempt_id={attempt_id}
-						attribute={attribute}
+						Attribute={Attribute}
 						handleClick={handleClick}
 						selections={selections}
 						checks={checks}
@@ -48,8 +52,20 @@ const Attempt = ({
 	);
 };
 const Check = ({ check }) => {
-	console.log(check);
-	return <div>{check ? "T" : "F"}</div>;
+	//console.log(check);
+	return (
+		<div className="Check">
+			{(() => {
+				if (check === "") {
+					return <div className="empty"></div>;
+				} else if (check === true) {
+					return <Correct />;
+				} else {
+					return <Wrong />;
+				}
+			})()}
+		</div>
+	);
 };
 const Board = ({ attempts, attributes, handleClick, selections, checks }) => {
 	return (

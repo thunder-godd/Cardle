@@ -1,8 +1,8 @@
 import React from "react";
 
-const Option = ({
+const Bttn = ({
 	id,
-	option,
+	Option,
 	selectOption,
 	currentAttempt,
 	currentAttribute,
@@ -12,9 +12,9 @@ const Option = ({
 			<button
 				id={id}
 				type="button"
-				className="btn btn-secondary"
-				onClick={() => selectOption(currentAttempt, currentAttribute, option)}>
-				{option}
+				className="btn"
+				onClick={() => selectOption(currentAttempt, currentAttribute, Option)}>
+				<Option />
 			</button>
 		</div>
 	);
@@ -26,18 +26,21 @@ const Options = ({
 	options,
 	selectOption,
 }) => {
+	console.log(options);
 	return (
 		<div className="Options">
-			{options.map((option, id) => (
-				<Option
-					key={id}
-					id={id}
-					option={option}
-					selectOption={selectOption}
-					currentAttempt={currentAttempt}
-					currentAttribute={currentAttribute}
-				/>
-			))}
+			{options.map((Option, index) => {
+				return (
+					<Bttn
+						key={index}
+						id={index}
+						Option={Option}
+						currentAttempt={currentAttempt}
+						currentAttribute={currentAttribute}
+						selectOption={selectOption}
+					/>
+				);
+			})}
 		</div>
 	);
 };

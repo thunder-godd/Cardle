@@ -1,13 +1,13 @@
 import React from "react";
-
+import Ok from "./icons/Ok";
 const Submit = ({ selections, currentAttempt, handleSubmit }) => {
 	return (
 		<div className="Submitbtn">
 			<button
 				type="button"
-				className="btn btn-secondary"
+				className="btn btn-submit"
 				onClick={() => handleSubmit(selections, currentAttempt)}>
-				OK
+				<Ok />
 			</button>
 		</div>
 	);
