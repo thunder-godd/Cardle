@@ -25,7 +25,7 @@ import Options from "./Options";
 import StatBar from "./StatBar";
 import Submit from "./Submit";
 
-const newCar = randomizer(CARS);
+let car = randomizer(CARS);
 
 const Start = ({ startGame }) => {
 	return (
@@ -38,10 +38,9 @@ const Start = ({ startGame }) => {
 };
 
 const Game = () => {
-	const [car, setCar] = useState(newCar);
-	const [attempts, setAttempts] = useState([0]);
+	const [attempts, setAttempts] = useState([0, 1, 2]);
+	const [count, setCount] = useState(1);
 	const [fuel, setFuel] = useState([0, 1, 2]);
-	const [prevAttempt, setPrevAttempt] = useState();
 	const [currentAttempt, setCurrentAttempt] = useState(0);
 	const [attributes] = useState([Color, Body, Engine]);
 	const [currentAttribute, setCurrentAttribute] = useState();
@@ -51,18 +50,15 @@ const Game = () => {
 		Direction,
 		Direction,
 	]);
-	const [status] = useState(["Attempts", "Correct"]);
+
 	const [win, setWin] = useState(false);
+	const [active, setActive] = useState([false, false, false]);
 	const [attrOpt] = useState({
 		colors: [Red, Blue, Black, Green],
 		body: [Sedan, Truck, Suv, Hatch],
 		engine: [Petrol, Electric, Hybrid, Diesel],
 	});
-	const [targets, setTargets] = useState([
-		["", "", ""],
-		["", "", ""],
-		["", "", ""],
-	]);
+
 	const [checks, setChecks] = useState([
 		["", "", ""],
 		["", "", ""],
@@ -73,10 +69,12 @@ const Game = () => {
 		["", "", ""],
 		["", "", ""],
 	]);
+
 	const startGame = () => {
 		setCurrentAttempt(0);
-		setCar(randomizer(CARS));
-		setAttempts([0]);
+		car = randomizer(CARS);
+		setAttempts([0, 1, 2]);
+		enableAttrmpt(0);
 		setOptions([Direction, Direction, Direction, Direction]);
 		setChecks([
 			["", "", ""],
@@ -88,14 +86,19 @@ const Game = () => {
 			["", "", ""],
 			["", "", ""],
 		]);
-		setTargets([
-			["", "", ""],
-			["", "", ""],
-			["", "", ""],
-		]);
+
 		setFuel([0, 1, 2]);
 	};
 	//console.log(car);
+	//disable prev attempt
+	//hide inactive attempts
+	//set lives
+	//reset all state variables
+	//gameover screen
+	//track games played
+	// keep score
+	//go button shoul only be enabled when green
+	//build and deploy
 
 	const checker = (selection, currentAttempt) => {
 		////console.log(selection);
@@ -129,21 +132,32 @@ const Game = () => {
 			setWin(true);
 		//console.log(win, "you win");
 	};
-	const disableAttempt = () => {
-		for (let i = 0; i < 3; i++) {
-			targets[currentAttempt][i].disabled = true;
-		}
+	const enableAttrmpt = (id) => {
+		setActive((prevState) => {
+			active[id] = true;
+			return [...prevState];
+		});
 	};
-	const handleClick = (target, attempt_id, attr_id) => {
-		console.log(target, attempt_id, attr_id);
+	const disableAttempt = (id) => {
+		setActive((prevState) => {
+			active[id] = false;
+			return [...prevState];
+		});
+	};
+	const changeLives = () => {
+		console.log(fuel);
+		// setFuel((prevState) => {
+		// 	prevState.pop();
+		// 	return [...prevState];
+		// });
+		console.log(fuel);
+	};
+	const handleClick = (attempt_id, attr_id) => {
+		//console.log(target, attempt_id, attr_id);
 		let myOptions = mapOptions(attr_id);
 		setOptions(myOptions);
 		setCurrentAttempt(attempt_id);
 		setCurrentAttribute(attr_id);
-		setTargets((prevState) => {
-			prevState[attempt_id][attr_id] = target;
-			return [...prevState];
-		});
 	};
 	const mapOptions = (attr_id) => {
 		let opt;
@@ -181,13 +195,17 @@ const Game = () => {
 		// //console.log(selections, currentAttempt);
 		// //console.log(selection);
 		checker(selection, currentAttempt);
-		disableAttempt();
-		setPrevAttempt(currentAttempt);
-		setFuel(fuel.pop());
+		disableAttempt(currentAttempt);
+		setOptions([Direction, Direction, Direction, Direction]);
+		setCurrentAttribute();
+		enableAttrmpt(currentAttempt + 1);
+		console.log(count);
+		setCount((prevState) => prevState + 1);
+		console.log(count);
 	};
 	return (
 		<div className="Game" id="Game">
-			<StatBar status={status} />
+			<StatBar fuel={fuel} />
 
 			{win || fuel.length < 1 ? <GameOver /> : ""}
 
@@ -197,6 +215,7 @@ const Game = () => {
 				handleClick={handleClick}
 				selections={selections}
 				checks={checks}
+				active={active}
 			/>
 
 			<div className="row">

@@ -26,7 +26,7 @@ const Options = ({
 	options,
 	selectOption,
 }) => {
-	console.log(options);
+	//console.log(options);
 	return (
 		<div className="Options">
 			{options.map((Option, index) => {

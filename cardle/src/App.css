@@ -50,9 +50,15 @@
 	color: #ffffff;
 	padding-left: 0.5rem;
 }
-/* .status {
-	border: 1px solid black;
-} */
+.status {
+	/* border: 1px solid black; */
+	display: flex;
+	justify-content: space-between;
+	width: 7rem;
+}
+.wins {
+	align-self: flex-end;
+}
 .Board {
 	background-color: #00041e;
 	width: 90%;
@@ -69,7 +75,7 @@
 	margin-bottom: 0.5rem;
 }
 .inactive {
-	display: none;
+	display: hidden;
 }
 .Attribute {
 	width: 5rem;
@@ -86,8 +92,14 @@
 	border: none;
 	border-radius: 7px;
 }
+
+.disabled {
+	pointer-events: none;
+	opacity: 0.4;
+}
 .Check {
 	align-self: center;
+	opacity: 1;
 }
 .row {
 	/* border: 1px solid rgb(161, 206, 38); */

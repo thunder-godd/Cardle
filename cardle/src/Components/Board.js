@@ -13,12 +13,10 @@ const Btn = ({
 	let check = checks[attempt_id][attr_id];
 
 	return (
-		<div className="Attribute">
+		<div className="Attribute" id={attr_id}>
 			<button
 				className="btn btn-secondary"
-				onClick={(e) => handleClick(e.target, attempt_id, attr_id)}
-				//onClick={() => console.log("clicked", attempt_id, attr_id)}
-			>
+				onClick={() => handleClick(attempt_id, attr_id)}>
 				{Selection !== "" ? <Selection /> : <Attribute />}
 			</button>
 			<Check check={check} />
@@ -32,22 +30,26 @@ const Attempt = ({
 	handleClick,
 	selections,
 	checks,
+	active,
 }) => {
+	let isActive = active[attempt_id];
 	return (
-		<div className="Attempt" id={attempt_id}>
-			{attributes.map((Attribute, id) => {
-				return (
-					<Btn
-						key={id}
-						attr_id={id}
-						attempt_id={attempt_id}
-						Attribute={Attribute}
-						handleClick={handleClick}
-						selections={selections}
-						checks={checks}
-					/>
-				);
-			})}
+		<div className={isActive ? null : "disabled"}>
+			<div className="Attempt" id={attempt_id}>
+				{attributes.map((Attribute, id) => {
+					return (
+						<Btn
+							key={id}
+							attr_id={id}
+							attempt_id={attempt_id}
+							Attribute={Attribute}
+							handleClick={handleClick}
+							selections={selections}
+							checks={checks}
+						/>
+					);
+				})}
+			</div>
 		</div>
 	);
 };
@@ -67,7 +69,14 @@ const Check = ({ check }) => {
 		</div>
 	);
 };
-const Board = ({ attempts, attributes, handleClick, selections, checks }) => {
+const Board = ({
+	attempts,
+	attributes,
+	handleClick,
+	selections,
+	checks,
+	active,
+}) => {
 	return (
 		<div className="Board">
 			{attempts.map((attempt, id) => {
@@ -79,6 +88,7 @@ const Board = ({ attempts, attributes, handleClick, selections, checks }) => {
 						handleClick={handleClick}
 						selections={selections}
 						checks={checks}
+						active={active}
 					/>
 				);
 			})}
