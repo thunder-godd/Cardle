@@ -32,10 +32,16 @@
 .logo {
 	color: #ffffff;
 	font-family: "Sarina", cursive;
+	text-align: center;
 }
-.navbar-toggler {
+.how {
+	width: 1.8rem;
+	height: 1.8rem;
+	border-radius: 50%;
+}
+/* .navbar-toggler {
 	width: 1.5rem;
-}
+} */
 /* .Game {
 } */
 .StatBar {
@@ -59,12 +65,44 @@
 .wins {
 	align-self: flex-end;
 }
+.gameover {
+	/* border: 2px solid red; */
+	background-color: #000000;
+	border-radius: 7px;
+	/* backdrop-filter: blur(300x); */
+	height: 19rem;
+	width: 310px;
+	position: fixed;
+	margin: auto 0.25rem;
+	z-index: 1;
+	opacity: 0.95;
+}
+.gameover > h4 {
+	color: #ffffff;
+	width: 100%;
+	text-align: center;
+}
+.endgame {
+	/* border: 2px solid red; */
+	height: 12rem;
+	width: 75%;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	place-items: center;
+	opacity: 1;
+}
+.endgame > img {
+	width: 4rem;
+}
+
 .Board {
 	background-color: #00041e;
 	width: 90%;
 	margin: auto;
 	margin-top: 1rem;
 	padding: 0.5rem;
+
 	/* border: 1px dotted orangered; */
 	border-radius: 7px;
 }
@@ -73,9 +111,6 @@
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 0.5rem;
-}
-.inactive {
-	display: hidden;
 }
 .Attribute {
 	width: 5rem;

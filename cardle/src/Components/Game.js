@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import CARS from "utilities/cars";
 import randomizer from "utilities/randomizer";
 import Color from "./icons/Color";
@@ -22,10 +22,10 @@ import Hybrid from "./icons/Hybrid";
 import Board from "./Board";
 import GameOver from "./GameOver";
 import Options from "./Options";
-import StatBar from "./StatBar";
+// import StatBar from "./StatBar";
 import Submit from "./Submit";
 
-let car = randomizer(CARS);
+let car;
 
 const Start = ({ startGame }) => {
 	return (
@@ -39,8 +39,8 @@ const Start = ({ startGame }) => {
 
 const Game = () => {
 	const [attempts, setAttempts] = useState([0, 1, 2]);
-	const [count, setCount] = useState(1);
-	const [fuel, setFuel] = useState([0, 1, 2]);
+	const [count, setCount] = useState(2);
+	const [wins, setWins] = useState(0);
 	const [currentAttempt, setCurrentAttempt] = useState(0);
 	const [attributes] = useState([Color, Body, Engine]);
 	const [currentAttribute, setCurrentAttribute] = useState();
@@ -71,10 +71,12 @@ const Game = () => {
 	]);
 
 	const startGame = () => {
+		setWin(false);
 		setCurrentAttempt(0);
 		car = randomizer(CARS);
+		setCount(2);
 		setAttempts([0, 1, 2]);
-		enableAttrmpt(0);
+		disableAttempts();
 		setOptions([Direction, Direction, Direction, Direction]);
 		setChecks([
 			["", "", ""],
@@ -86,8 +88,6 @@ const Game = () => {
 			["", "", ""],
 			["", "", ""],
 		]);
-
-		setFuel([0, 1, 2]);
 	};
 	//console.log(car);
 	//disable prev attempt
@@ -101,16 +101,13 @@ const Game = () => {
 	//build and deploy
 
 	const checker = (selection, currentAttempt) => {
-		////console.log(selection);
 		for (let i = 0; i < selection.length; i++) {
 			if (selection[i] === car[i]) {
-				//console.log(`${selection[i]}  is correct`);
 				setChecks((prevState) => {
 					prevState[currentAttempt][i] = true;
 					return [...prevState];
 				});
 			} else {
-				//console.log(`${selection[i]}  is wrong`);
 				setChecks((prevState) => {
 					prevState[currentAttempt][i] = false;
 					return [...prevState];
@@ -118,25 +115,40 @@ const Game = () => {
 			}
 		}
 	};
-	useEffect(() => {
-		//console.log(checks);
-		checkWin();
-	});
-	const checkWin = () => {
-		//console.log(win, currentAttempt);
-		//console.log(checks[currentAttempt]);
-
-		checks[currentAttempt][0] &&
+	const checkWin = useCallback(
+		() =>
+			checks[currentAttempt][0] &&
 			checks[currentAttempt][1] &&
 			checks[currentAttempt][2] &&
-			setWin(true);
-		//console.log(win, "you win");
-	};
+			setWin(true),
+		[checks, currentAttempt]
+	);
+
+	useEffect(() => {
+		checkWin();
+	}, [win, checkWin]);
+	const changeLives = useCallback(() => {
+		console.log(count);
+		//
+	}, [count]);
+	useEffect(() => {
+		changeLives();
+	}, [changeLives]);
+
 	const enableAttrmpt = (id) => {
 		setActive((prevState) => {
 			active[id] = true;
 			return [...prevState];
 		});
+	};
+	const disableAttempts = () => {
+		enableAttrmpt(0);
+		for (let i = 1; i < 3; i++) {
+			setActive((prevState) => {
+				active[i] = false;
+				return [...prevState];
+			});
+		}
 	};
 	const disableAttempt = (id) => {
 		setActive((prevState) => {
@@ -144,14 +156,7 @@ const Game = () => {
 			return [...prevState];
 		});
 	};
-	const changeLives = () => {
-		console.log(fuel);
-		// setFuel((prevState) => {
-		// 	prevState.pop();
-		// 	return [...prevState];
-		// });
-		console.log(fuel);
-	};
+
 	const handleClick = (attempt_id, attr_id) => {
 		//console.log(target, attempt_id, attr_id);
 		let myOptions = mapOptions(attr_id);
@@ -181,10 +186,6 @@ const Game = () => {
 			prevState[currentAttempt][currentAttribute] = option;
 			return [...prevState];
 		});
-		// //console.log(selections);
-		// //console.log(currentAttempt);
-		// //console.log(currentAttribute);
-		//console.log(option);
 	};
 	const handleSubmit = (selections, currentAttempt) => {
 		const selection = selections[currentAttempt];
@@ -199,16 +200,19 @@ const Game = () => {
 		setOptions([Direction, Direction, Direction, Direction]);
 		setCurrentAttribute();
 		enableAttrmpt(currentAttempt + 1);
-		console.log(count);
-		setCount((prevState) => prevState + 1);
-		console.log(count);
+		setCount((prevState) => prevState - 1);
+	};
+	const gameover = () => {
+		if (win || count < 0) {
+			return true;
+		} else return false;
 	};
 	return (
 		<div className="Game" id="Game">
-			<StatBar fuel={fuel} />
+			{/* <StatBar count={count} /> */}
 
-			{win || fuel.length < 1 ? <GameOver /> : ""}
-
+			{gameover() ? <GameOver win={win} wins={wins} /> : ""}
+			{/* <GameOver /> */}
 			<Board
 				attempts={attempts}
 				attributes={attributes}
@@ -216,6 +220,8 @@ const Game = () => {
 				selections={selections}
 				checks={checks}
 				active={active}
+				win={win}
+				gameover={gameover}
 			/>
 
 			<div className="row">

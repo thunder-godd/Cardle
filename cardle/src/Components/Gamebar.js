@@ -1,5 +1,5 @@
 import React from "react";
-
+import how from "./images/how.png";
 const Gamebar = () => {
 	const toggle = () => {
 		//console.log("toggled");
@@ -10,8 +10,8 @@ const Gamebar = () => {
 				<span className="logo" href="/">
 					Cardle
 				</span>
-				<button className="navbar-toggler" onClick={(e) => toggle()}>
-					<span className="navbar-toggler-icon"></span>
+				<button className="how" onClick={(e) => toggle()}>
+					<img src={how} alt="question mark" />
 				</button>
 			</nav>
 		</div>

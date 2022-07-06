@@ -31,8 +31,12 @@ const Attempt = ({
 	selections,
 	checks,
 	active,
+	gameover,
 }) => {
 	let isActive = active[attempt_id];
+
+	// gameover() ? (isActive = false) : (isActive = true);
+
 	return (
 		<div className={isActive ? null : "disabled"}>
 			<div className="Attempt" id={attempt_id}>
@@ -76,9 +80,12 @@ const Board = ({
 	selections,
 	checks,
 	active,
+	gameover,
 }) => {
 	return (
-		<div className="Board">
+		<div
+			className="Board"
+			style={gameover() ? { opacity: 0.25 } : { opacity: 1 }}>
 			{attempts.map((attempt, id) => {
 				return (
 					<Attempt
@@ -89,6 +96,7 @@ const Board = ({
 						selections={selections}
 						checks={checks}
 						active={active}
+						gameover={gameover}
 					/>
 				);
 			})}
